@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+
+
+@theme {
+  --color-neutral-900: #060716;
+  --color-neutral-800: #26223a;
+  --color-neutral-700: #2f2a43;
+  --color-neutral-600: #3d3852;
+  --color-neutral-300: #b3b3b8;
+  --color-neutral-200: #d6d5dc;
+  --color-neutral-0: #ffffff;
+  --color-blue-500: #4952e1;
+  --color-blue-700: #4c2da0;
+  --color-orange-500: #ff8c1a;
+
+    --font-dmSans: 'DM Sans', sans-serif;
+    --font-bricolageGrotesque: 'Bricolage Grotesque', sans-serif;
+}
