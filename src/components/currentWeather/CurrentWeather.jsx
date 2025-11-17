@@ -1,39 +1,41 @@
 import Loading from "../loading/Loading";
-import WeatherIcon from "../weatherIcon/WeatherIcon";
-export default function CurrentWeather({ locationData, data ,loading}) {
-  
+
+export default function CurrentWeather({ currentWeather ,loading}) {
   return (
-<div className="bg-neutral-600/60 rounded-2xl  w-full h-[300px] ">
-{  loading ? <span className="flex items-center justify-center py-10"><Loading/></span> :    <div
-      className="flex justify-between items-center bg-cover rounded-2xl
+   
+    <div className="bg-neutral-600/60 rounded-2xl  w-full h-[300px] ">
+      {
+       loading?  <span className="flex items-center justify-center py-10"><Loading/></span>: 
+        <div
+          className="flex justify-between items-center bg-cover rounded-2xl
                      md:bg-[url('/assets/images/bg-today-large.svg')] 
                      bg-[url('/assets/images/bg-today-small.svg')] 
                       bg-no-repeat bg-center 
                      md:p-10 p-20 size-full"
-    > 
-      <span className="flex flex-col ">
-        {" "}
-        <span className="font-semibold md:text-2xl text-lg font-bricolageGrotesque">
-          {locationData.city}, {locationData.country}
+        >
+          <span className="flex flex-col ">
+            {" "}
+            <span className="font-semibold md:text-2xl text-lg font-bricolageGrotesque">
+              {currentWeather.city}, {currentWeather.country}
+            </span>
+            <span>{currentWeather.description}</span>
+            <span className='md:text-md text-sm font-medium'>
+    {currentWeather.date}
         </span>
-        <span className='md:text-md text-sm font-medium'>
-          {new Date(data.current.time).toLocaleDateString("en-US", {
-            weekday: "long",
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </span>
-      </span>
-   <div className='flex gap-6'>
-       <WeatherIcon weatherCode={(data.current.weather_code)} className='md:size-15 size-12' />
-      <span className="font-bold text-5xl font-dmSans">
-        {Math.round(data.current.temperature_2m)} {data.hourly_units.temperature_2m}
-      </span>
-   </div>
-    </div>}
-
-
-</div>
+          </span>
+          <div className="flex items-center  gap-2">
+            {/* <img
+            className="md:size-24 size-15"
+              src={`../../../public/assets/images/${currentWeather.weatherIcon}.webp`}
+              alt=""
+            /> */}
+            <img src={currentWeather.stateIcon} alt="" />
+            <span className="font-bold text-5xl font-dmSans">
+              {currentWeather.temperature}
+            </span>
+          </div>
+        </div>
+      }
+    </div>
   );
 }
