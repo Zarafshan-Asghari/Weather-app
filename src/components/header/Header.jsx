@@ -2,41 +2,42 @@ import logo from "../../../public/assets/images/logo.svg";
 import settingIcon from "../../../public/assets/images/icon-units.svg";
 import dropdownIcon from "../../../public/assets/images/dropdown.png";
 import checkMarkIcon from "../../../public/assets/images/icon-checkmark.svg";
-import { useEffect, useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import { UnitsContext } from "../../App";
 
 const settings = [
-  { title: "temp", options: ["°C", "°F"] },
-  { title: "feellike", options: ["°C", "°F"] },
-  { title: "wind", options: ["km/h", "mph"] },
-  { title: "precipit", options: ["mm", "inch"] },
+  { title: "temperature", options: ["Celsius(°C)", "Fahrenhiet(°F)"] },
+  { title: "wind", options: ["kmh", "mph"] },
+  { title: "precip", options: ["mm", "in"] },
 ];
 
-export default function Header({units,setUnits}) {
+export default function Header() {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const {defaultUnits, setDefaultUnits}=useContext(UnitsContext)
 
  
 
   const handleSelect = (settingTitle, option) => {
-    setUnits((prev) => ({ ...prev, [settingTitle]: option }));
+    setDefaultUnits((prev) => ({ ...prev, [settingTitle]: option }));
   };
 
   useEffect(() => {
-    console.log("Updated Units:", units);
-  }, [units]);
+    setIsDropDownOpen()
+     console.log(defaultUnits)
+  }, [defaultUnits]);
   
-  console.log(currentUnit)
+ 
 
 
 
   return (
     <header className="">
-      <div className="flex items-center justify-between mb-10">
+      <div className="flex justify-between items-center">
         {" "}
         {/* Logo */}
-        <div className="flex items-center gap-3">
-          <img src={logo} alt="Logo" />
-        </div>
+       
+          <img src={logo} alt="Logo" className="md:size-48 size-24"/>
+       
         {/* Dropdown  */}
         <div
           onClick={() => setIsDropDownOpen(!isDropDownOpen)}
@@ -57,7 +58,7 @@ export default function Header({units,setUnits}) {
           } absolute right-10  top-20 rounded-sm p-4 bg-neutral-600 text-neutral-200 text-xs md:w-40 w-32`}
         >
           <div className="flex flex-col gap-3 w-full">
-            {units.map((item) => (
+            {settings.map((item) => (
               <div
                 key={item.title}
                 className="border-b border-neutral-500 py-1 flex flex-col gap-1"
@@ -74,7 +75,7 @@ export default function Header({units,setUnits}) {
                       onClick={() => handleSelect(item.title, option)}
                       key={option}
                       className={`flex items-center justify-between p-1 rounded-sm hover:bg-neutral-700 ${
-                        units[item.title] === option
+                        defaultUnits[item.title] === option
                           ? "bg-neutral-700"
                           : ""
                       }`}
@@ -85,7 +86,7 @@ export default function Header({units,setUnits}) {
                         src={checkMarkIcon}
                         alt="check mark"
                         className={`${
-                          units[item.title] === option
+                          defaultUnits[item.title] === option
                             ? "block"
                             : "hidden"
                         } `}

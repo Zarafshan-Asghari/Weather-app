@@ -6,9 +6,9 @@ import ForecastHour from "./components/forcastHour/ForcastHour";
 import Header from "./components/header/Header";
 import NotFound from "./components/notFound/NotFound";
 import WeatherStates from "./components/weatherStates/WeatherStates";
-import { useState } from "react";
+import { useState ,createContext} from "react";
 import { weatherCodes } from "./contents";
-
+export const UnitsContext = createContext();
 function App() {
   const [currentWeather, setCurrentWeather] = useState({});
   const [hourlyForecast, setHourlyForecast] = useState([]);
@@ -16,13 +16,13 @@ function App() {
   const [dailyforecastData, setDailyforecastData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [units, setUnits] = useState({
-    temp: ["c",'f'],
-    feelLike: ["c",'f'],
-    wind: ["kmh",'mph'],
-    precip: ["in",'mph'],
+  const [defaultUnits, setDefaultUnits] = useState({
+    // '°C':'°F'
+    temperature: "Celsius(°C)",
+    wind: "kmh",
+    precipitation: "Inches(in)",
   });
-  console.log(units.temp)
+console.log('units ',defaultUnits)
   const getWeatherDetails = async (apiUrl) => {
     try {
       const response = await fetch(apiUrl);
@@ -31,16 +31,16 @@ function App() {
       console.log(data);
       const forecastHourlyData = [...data.forecast.forecastday[0].hour];
       filterHourlyForecast(forecastHourlyData);
-      const temperature = Math.round(data.current.temp_c);
+      const temperature = defaultUnits.temperature==='Celsius(°C)'?  Math.round(data.current.temp_c) : Math.round(data.current.temp_f)
       const description = data.current.condition.text;
       const stateIcon = data.current.condition.icon;
       const city = data.location.name;
       const country = data.location.country;
       // const timeZone = data.location.tz_id;
-      const feelLike = Math.floor(`${data.current.feelslike_c}`);
+      const feelLike = defaultUnits.temperature==='Celsius(°C)'? Math.floor(`${data.current.feelslike_c}`) :Math.floor(`${data.current.feelslike_f}`)
       const humitidy = data.current.humidity;
-      const precep = Math.floor(data.current.precip_in);
-      const windSpeed = data.current.wind_kph;
+      const precep = defaultUnits.precipitation==='Inches(in)'? Math.floor(data.current.precip_in):Math.floor(data.current.precip_mm)
+      const windSpeed =defaultUnits.wind==='kmh' ? Math.round(data.current.wind_kph) :Math.round(data.current.wind_mph)
       setDailyforecastData(data.forecast.forecastday);
       const weatherIcon = Object.keys(weatherCodes).find((icon) =>
         weatherCodes[icon].includes(data.current.condition.code)
@@ -67,7 +67,7 @@ function App() {
         {
           title: "feel like",
           value: feelLike,
-          unit: "c",
+          unit: defaultUnits.temperature=== "Celsius(°C)" ? '°C':'°F',
         },
         {
           value: humitidy,
@@ -77,12 +77,12 @@ function App() {
         {
           value: windSpeed,
           title: "wind",
-          unit: "kmh",
+          unit: defaultUnits.wind=== "kmh" ? 'km/h': "mp/h",
         },
         {
           value: precep,
           title: "precipitation",
-          unit: "mm",
+          unit:defaultUnits.precip=== "mm" ? 'mm' :'in',
         },
       ]);
     } catch {
@@ -101,14 +101,13 @@ function App() {
   };
 
   return (
-    <>
+    <UnitsContext.Provider  value={{ defaultUnits, setDefaultUnits }}>
       {error ? (
         <NotFound />
       ) : (
         <div className="bg-neutral-800 text-white h-full bg-cover flex flex-col items-center gap-8 py-10">
           <div className="container">
-            {/* <Header units={units} setUnits={setUnits}/> */}
-
+             <Header /> 
             <Searchbar getWeatherDetails={getWeatherDetails} />
           </div>
 
@@ -142,7 +141,7 @@ function App() {
           </section>
         </div>
       )}
-    </>
+    </UnitsContext.Provider>
   );
 }
 

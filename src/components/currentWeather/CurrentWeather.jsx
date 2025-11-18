@@ -1,6 +1,8 @@
 import Loading from "../loading/Loading";
-
+import { UnitsContext } from "../../App";
+import { useContext } from "react";
 export default function CurrentWeather({ currentWeather ,loading}) {
+  const {defaultUnits}=useContext(UnitsContext)
   return (
    
     <div className="bg-neutral-600/60 rounded-2xl  w-full h-[300px] ">
@@ -11,7 +13,7 @@ export default function CurrentWeather({ currentWeather ,loading}) {
                      md:bg-[url('/assets/images/bg-today-large.svg')] 
                      bg-[url('/assets/images/bg-today-small.svg')] 
                       bg-no-repeat bg-center 
-                     md:p-10 p-20 size-full"
+                     md:p-10 p-6 size-full"
         >
           <span className="flex flex-col ">
             {" "}
@@ -24,14 +26,10 @@ export default function CurrentWeather({ currentWeather ,loading}) {
         </span>
           </span>
           <div className="flex items-center  gap-2">
-            {/* <img
-            className="md:size-24 size-15"
-              src={`../../../public/assets/images/${currentWeather.weatherIcon}.webp`}
-              alt=""
-            /> */}
+       
             <img src={currentWeather.stateIcon} alt="" />
-            <span className="font-bold text-5xl font-dmSans">
-              {currentWeather.temperature}
+            <span className="font-bold md:text-5xl text-2xl font-dmSans">
+              {currentWeather.temperature}{defaultUnits.temperature==='Celsius(°C)' ? '°C' :'°F'}
             </span>
           </div>
         </div>

@@ -1,10 +1,13 @@
 import { FaSearch } from "react-icons/fa";
 import { FaCrosshairs } from "react-icons/fa";
 import { useEffect } from "react";
+import { UnitsContext } from "../../App";
+import { useContext } from "react";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 export default function Searchbar({ getWeatherDetails }) {
+    const { defaultUnits } = useContext(UnitsContext);
   const handleCityName = (e) => {
     e.preventDefault();
     const cityName = e.target.querySelector(".searchInput").value;
@@ -28,7 +31,7 @@ export default function Searchbar({ getWeatherDetails }) {
   };
     useEffect(() => {
     handleLocationSearch();
-  }, []);
+  }, [defaultUnits]);
   return (
     <>
       <form
@@ -39,7 +42,7 @@ export default function Searchbar({ getWeatherDetails }) {
           className="cursor-pointer"
           onClick={handleLocationSearch}
         />
-        <span className="flex items-center gap-2 bg-neutral-600 px-4 py-2 rounded-md  ">
+        <span className="flex items-center md:gap-2 gap-1.5 bg-neutral-600 md:px-4 md:py-2  px-2 py-1 rounded-md  ">
           <FaSearch className="text-neutral-400"/>
           <input
             type="text"
@@ -47,7 +50,7 @@ export default function Searchbar({ getWeatherDetails }) {
             className="searchInput  outline-none"
           />
         </span>
-        <button className="bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-md text-neutral-200 hover:text-neutral-100">
+        <button className="bg-blue-500 hover:bg-blue-700 md:px-4 md:py-2 px-2 py-1 rounded-md text-neutral-200 hover:text-neutral-100">
           search
         </button>
       </form>
